@@ -1,0 +1,3 @@
+# 既定ルールで秘密情報 (APIキー、トークン、秘密鍵など) を検出する
+[extend]
+useDefault = true

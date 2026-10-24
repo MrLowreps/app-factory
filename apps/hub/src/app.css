@@ -1,0 +1,48 @@
+/* レイアウト用。色・余白・文字はセマンティック/コンポーネントのトークン変数だけを使う。 */
+.app {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: var(--space-6) var(--space-4);
+}
+
+.card {
+  width: 100%;
+  max-width: 26.25rem;
+  padding: var(--card-padding);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+
+.card h1 {
+  font-size: var(--font-size-xl);
+}
+
+.card p {
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.button {
+  min-height: var(--button-min-height);
+  margin-top: var(--space-6);
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border: none;
+  border-radius: var(--button-radius);
+  background: var(--button-bg);
+  color: var(--button-text);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+
+.button:hover {
+  background: var(--button-bg-hover);
+}
+
+.button:active {
+  background: var(--button-bg-pressed);
+}

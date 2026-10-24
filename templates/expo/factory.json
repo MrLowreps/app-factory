@@ -1,0 +1,10 @@
+{
+  "name": "__APP_NAME__",
+  "description": "このアプリの一言説明",
+  "platforms": ["ios", "android"],
+  "status": "wip",
+  "publishedAt": "",
+  "links": {},
+  "thumbnail": "",
+  "tags": []
+}

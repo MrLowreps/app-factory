@@ -1,0 +1,12 @@
+{
+  "name": "__APP_NAME__",
+  "description": "このアプリの一言説明",
+  "platforms": ["web"],
+  "status": "wip",
+  "publishedAt": "",
+  "links": {
+    "web": "https://__APP_SLUG__.pages.dev"
+  },
+  "thumbnail": "",
+  "tags": []
+}

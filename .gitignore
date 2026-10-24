@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.expo/
+web-build/
+*.tsbuildinfo
+.DS_Store
+.env*.local
+
+# 自動生成ファイル
+packages/design-tokens/dist/
+apps/hub/src/generated/
+apps/hub/public/thumbs/

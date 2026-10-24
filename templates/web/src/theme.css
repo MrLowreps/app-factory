@@ -1,0 +1,27 @@
+/*
+ * このアプリだけのテーマ。上書きしてよいのはセマンティック層 (--color-* など) だけ。
+ * - ライトとダークは必ず両方書く (片方だけだと、もう片方で既定の色に戻る)。`pnpm lint` で検査される
+ * - primary を変えれば hover / pressed / soft は自動で追従する。上に乗る文字色 (on-primary) は一緒に見直す
+ * - アプリ固有の役割 (例: --color-macro-protein) もここで定義する
+ * 下の値は既定と同じ。アプリの色に書き換えて使う。
+ */
+
+:root {
+  --color-primary: #3D5AFE;
+  --color-on-primary: #FFFFFF;
+  --color-accent: #FF7A59;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-primary: #7C8CFF;
+    --color-on-primary: #0E1033;
+    --color-accent: #FF9A7F;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-primary: #7C8CFF;
+  --color-on-primary: #0E1033;
+  --color-accent: #FF9A7F;
+}
