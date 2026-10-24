@@ -2,10 +2,13 @@ import { useColorScheme } from 'react-native';
 import { createTheme } from '@app-factory/design-tokens';
 
 // このアプリだけのテーマ。上書きしてよいのはセマンティック色だけ (名前は CSS の --color-* と同じ)。
-// アプリ固有の役割 (例: 'macro-protein') もここで追加でき、theme.color.macroProtein で参照できる。
+// - ライトとダークは必ず両方書く
+// - primary を変えれば hover / pressed / soft は自動で追従する
+// - アプリ固有の役割 (例: 'macro-protein') もここで追加でき、theme.color.macroProtein で参照できる
+// 下の値は既定と同じ。アプリの色に書き換えて使う。
 const overrides: Record<'light' | 'dark', Record<string, string>> = {
-  light: {},
-  dark: {},
+  light: { primary: '#3D5AFE', accent: '#FF7A59' },
+  dark: { primary: '#7C8CFF', accent: '#FF9A7F' },
 };
 
 const themes = {

@@ -11,7 +11,7 @@
     "dev:hub": "pnpm --filter hub dev",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
-    "lint": "stylelint \"apps/**/*.css\" \"templates/**/*.css\" \"packages/design-tokens/src/**/*.css\" && node scripts/check-hardcoded.mjs"
+    "lint": "stylelint \"apps/**/*.css\" \"templates/**/*.css\" \"packages/design-tokens/src/**/*.css\" && node scripts/check-hardcoded.mjs && node scripts/check-theme.mjs"
   },
   "devDependencies": {
     "stylelint": "^17.16.0"

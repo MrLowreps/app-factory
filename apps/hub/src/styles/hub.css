@@ -78,7 +78,7 @@
 }
 
 .chip {
-  min-height: 2.75rem;
+  min-height: var(--chip-min-height);
   padding: var(--space-1) var(--space-4);
   border: 1px solid var(--chip-border);
   border-radius: var(--chip-radius);

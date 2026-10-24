@@ -10,8 +10,12 @@ export type SemanticColorName = keyof Semantic['color']['light'];
 type Camel<S extends string> = S extends `${infer H}-${infer T}` ? `${H}${Capitalize<Camel<T>>}` : S;
 
 export type ThemeColors = { [K in SemanticColorName as Camel<K>]: string } & Record<string, string>;
-// 寸法系 (padding / radius / gap) は数値、それ以外 (色・影の名前) は文字列
-type ComponentValue<K> = K extends `${string}padding${string}` | `${string}radius${string}` | `${string}gap${string}`
+// 寸法系 (padding / radius / gap / height) は数値、それ以外 (色・影の名前) は文字列
+type ComponentValue<K> = K extends
+  | `${string}padding${string}`
+  | `${string}radius${string}`
+  | `${string}gap${string}`
+  | `${string}height${string}`
   ? number
   : string;
 type ComponentTokens = {
@@ -36,6 +40,7 @@ export interface Theme {
   fontWeight: Semantic['font-weight'];
   lineHeight: Semantic['line-height'];
   radius: Semantic['radius'];
+  size: { [K in keyof Semantic['size'] as Camel<K & string>]: number };
   shadow: Record<keyof Semantic['shadow'], NativeShadow>;
   motion: Semantic['motion'];
   component: ComponentTokens;
@@ -66,6 +71,7 @@ export function createTheme(scheme: ColorScheme, overrides: Record<string, strin
     color: colors,
     space: tokens.semantic.space,
     radius: tokens.semantic.radius,
+    size: tokens.semantic.size,
     'font-size': tokens.semantic['font-size'],
   };
   const component = Object.fromEntries(
@@ -91,6 +97,7 @@ export function createTheme(scheme: ColorScheme, overrides: Record<string, strin
     fontWeight: tokens.semantic['font-weight'],
     lineHeight: tokens.semantic['line-height'],
     radius: tokens.semantic.radius,
+    size: camelKeys(tokens.semantic.size) as Theme['size'],
     shadow,
     motion: tokens.semantic.motion,
     component,

@@ -57,7 +57,7 @@ const createStyles = (t: AppTheme) =>
       fontSize: t.fontSize.md,
     },
     button: {
-      minHeight: 44,
+      minHeight: t.component.button.minHeight,
       justifyContent: 'center',
       marginTop: t.space[6],
       paddingVertical: t.component.button.paddingY,

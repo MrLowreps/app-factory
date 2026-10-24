@@ -60,7 +60,9 @@ pnpm --filter pomodoro-timer dev
 - 余白は `space-1`〜`space-10` (4px 刻み)、文字サイズは `xs`〜`2xl` (rem)
 - Web: CSS 変数を使う。スマホ: `useTheme()` のテーマオブジェクト (`theme.color.primary`, `theme.component.button.bg` など) を使う
 - アプリ固有の見た目は、Web は `src/theme.css`、スマホは `src/theme.ts` で **セマンティック層だけ** 上書きする。アプリ専用の役割 (例: `--color-macro-protein`) もそこで定義する
-- ライト/ダークは最初から両方用意する
+- ライト/ダークは最初から両方用意する (theme.css でダーク側を書き忘れると `pnpm lint` で検出)
+- `primary-hover` / `primary-pressed` / `primary-soft` は `primary` から自動で作られるので、ブランド色は `--color-primary` の1行で変わる
+- タップできる部品の高さは `--size-touch-min` (44px 相当) 以上にする
 
 色や px をコードに直接書くと `pnpm lint` で検出されます (色を書いてよいのは `tokens.json` と各アプリの `theme.css` / `theme.ts` だけ)。
 

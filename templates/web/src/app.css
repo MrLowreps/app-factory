@@ -27,7 +27,7 @@
 }
 
 .button {
-  min-height: 2.75rem;
+  min-height: var(--button-min-height);
   margin-top: var(--space-6);
   padding: var(--button-padding-y) var(--button-padding-x);
   border: none;

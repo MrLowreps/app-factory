@@ -4,7 +4,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { componentRef, parseRef } from '../src/resolve.ts';
+import { componentRef, isMix, parseRef } from '../src/resolve.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const tokens = JSON.parse(readFileSync(join(root, 'src/tokens.json'), 'utf8'));
@@ -20,7 +20,10 @@ const primitiveVars = Object.entries(primitive.color).flatMap(([hue, steps]) =>
 );
 
 // 2. セマンティック
+const KEYWORDS = new Set(['black', 'white']);
+const colorOperand = (name) => (KEYWORDS.has(name) ? name : `var(--color-${name})`);
 const colorValue = (v) => {
+  if (isMix(v)) return `color-mix(in oklab, ${colorOperand(v.mix[0])}, ${colorOperand(v.mix[1])} ${v.amount}%)`;
   const path = parseRef(v);
   return path ? `var(--palette-${path.join('-')})` : v;
 };
@@ -40,6 +43,7 @@ const staticVars = [
   ...Object.entries(semantic['font-weight']).map(([k, v]) => `--font-weight-${k}: ${v};`),
   ...Object.entries(semantic['line-height']).map(([k, v]) => `--line-height-${k}: ${v};`),
   ...Object.entries(semantic.radius).map(([k, v]) => `--radius-${k}: ${px(v)};`),
+  ...Object.entries(semantic.size).map(([k, v]) => `--size-${k}: ${rem(v)};`),
   ...Object.entries(semantic.motion).map(([k, v]) => `--motion-${k}: ${v}ms;`),
   ...Object.entries(semantic.ease).map(([k, v]) => `--ease-${k}: ${v};`),
 ];
