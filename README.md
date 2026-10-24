@@ -48,13 +48,31 @@ pnpm --filter pomodoro-timer dev
 
 ## デザインの調整
 
-見た目の値は **`packages/design-tokens/src/tokens.json` だけ** が元データです。ここを変えると全アプリ (Web もスマホも) に反映されます。
+見た目の値は **`packages/design-tokens/src/tokens.json` だけ** が元データです。ここを変えると全アプリ (Web もスマホも) に反映されます。トークンは3層です。
 
-- Web: 生成される CSS 変数 (`var(--color-primary)`, `var(--space-md)` など) を使う
-- スマホ: `createTheme()` で作ったテーマオブジェクト (`theme.color.primary` など) を使う
-- アプリ固有の色: Web は `src/theme.css`、スマホは `src/theme.ts` の上書き欄で変える
+| 層 | 例 | 使い方 |
+| --- | --- | --- |
+| プリミティブ | `--palette-blue-500` | 素の色。画面や部品からは直接使わない |
+| セマンティック | `--color-primary`, `--space-4`, `--font-size-md`, `--radius-lg`, `--shadow-card`, `--motion-fast` | 役割の名前。画面はここを使う |
+| コンポーネント | `--button-bg`, `--card-radius`, `--chip-bg-selected` | 部品ごとの値。セマンティックを参照する |
 
-色や余白をコードに直接書かず、必ずトークンを使ってください。
+- 命名は「種類-役割-状態」(例: `--color-primary-pressed`)
+- 余白は `space-1`〜`space-10` (4px 刻み)、文字サイズは `xs`〜`2xl` (rem)
+- Web: CSS 変数を使う。スマホ: `useTheme()` のテーマオブジェクト (`theme.color.primary`, `theme.component.button.bg` など) を使う
+- アプリ固有の見た目は、Web は `src/theme.css`、スマホは `src/theme.ts` で **セマンティック層だけ** 上書きする。アプリ専用の役割 (例: `--color-macro-protein`) もそこで定義する
+- ライト/ダークは最初から両方用意する
+
+色や px をコードに直接書くと `pnpm lint` で検出されます (色を書いてよいのは `tokens.json` と各アプリの `theme.css` / `theme.ts` だけ)。
+
+## セキュリティ
+
+PR と main への push ごとに、次のチェックが自動で走ります (`.github/workflows/security.yml`)。
+
+- 依存パッケージの脆弱性 (`pnpm audit`、深刻度 high 以上で失敗)。毎週月曜にも実行
+- 秘密情報 (APIキー・トークンなど) の混入検出 (gitleaks)
+- 静的解析 (CodeQL)
+- Dependabot による依存パッケージの更新 PR (週1回)
+- Web アプリは `public/_headers` でセキュリティヘッダー (CSP など) を付けて配信
 
 ## 公開
 
