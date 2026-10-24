@@ -72,6 +72,21 @@ export function calcTargets(profile: Profile): Targets {
   return { kcal, p, f, c };
 }
 
+/** PFC から計算したカロリー (たんぱく質・炭水化物 4kcal/g、脂質 9kcal/g) */
+export const kcalFromPfc = ({ p, f, c }: Pick<Targets, 'p' | 'f' | 'c'>): number => Math.round(p * 4 + f * 9 + c * 4);
+
+/** PFC のどれかを変えたら、カロリーもそれに合わせる */
+export function withMacro(t: Targets, key: 'p' | 'f' | 'c', value: number): Targets {
+  const next = { ...t, [key]: value };
+  return Number.isFinite(value) ? { ...next, kcal: kcalFromPfc(next) } : next;
+}
+
+/** カロリーを変えたら、たんぱく質と脂質はそのままにして炭水化物で合わせる */
+export function withKcal(t: Targets, kcal: number): Targets {
+  if (!Number.isFinite(kcal)) return { ...t, kcal };
+  return { ...t, kcal, c: Math.max(0, Math.round((kcal - t.p * 4 - t.f * 9) / 4)) };
+}
+
 /** 一般的な目安。目標設定を飛ばした人向け */
 export const DEFAULT_TARGETS: Targets = { kcal: 2000, p: 75, f: 55, c: 300 };
 

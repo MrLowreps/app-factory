@@ -16,6 +16,8 @@ import {
   type Profile,
   type Sex,
   type Targets,
+  withKcal,
+  withMacro,
 } from '../domain/targets';
 import { useAppState } from '../state';
 import { Icon, type IconName } from '../ui/Icon';
@@ -267,13 +269,14 @@ function Result({ profile, onConfirm }: { profile: Profile; onConfirm: (t: Targe
 }
 
 export function TargetEditor({ value, onChange }: { value: Targets; onChange: (t: Targets) => void }) {
-  const set = (key: keyof Targets) => (n: number) => onChange({ ...value, [key]: n });
+  const setMacro = (key: 'p' | 'f' | 'c') => (n: number) => onChange(withMacro(value, key, n));
   return (
     <div className="stack">
-      <NumberField label="カロリー" unit="kcal" value={value.kcal} min={1000} max={5000} step={10} onChange={set('kcal')} />
-      <NumberField label="たんぱく質" unit="g" value={value.p} min={0} max={400} step={1} onChange={set('p')} />
-      <NumberField label="脂質" unit="g" value={value.f} min={0} max={300} step={1} onChange={set('f')} />
-      <NumberField label="炭水化物" unit="g" value={value.c} min={0} max={800} step={1} onChange={set('c')} />
+      <NumberField label="カロリー" unit="kcal" value={value.kcal} min={1000} max={5000} step={10} onChange={(n) => onChange(withKcal(value, n))} />
+      <NumberField label="たんぱく質" unit="g" value={value.p} min={0} max={400} step={1} onChange={setMacro('p')} />
+      <NumberField label="脂質" unit="g" value={value.f} min={0} max={300} step={1} onChange={setMacro('f')} />
+      <NumberField label="炭水化物" unit="g" value={value.c} min={0} max={800} step={1} onChange={setMacro('c')} />
+      <p className="muted small">カロリーを変えると炭水化物が、PFCを変えるとカロリーが自動で合わせて変わります。</p>
     </div>
   );
 }
