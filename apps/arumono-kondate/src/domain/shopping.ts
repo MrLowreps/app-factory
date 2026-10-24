@@ -29,7 +29,7 @@ export function buildShoppingIcs(lines: string[], start: Date, appName: string):
   const stamp = (d: Date) => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const end = new Date(start.getTime() + 30 * 60 * 1000);
   const escape = (s: string) => s.replace(/\\/g, '\\\\').replace(/[,;]/g, (m) => `\\${m}`).replace(/\n/g, '\\n');
-  const uid = `${stamp(new Date())}-${Math.random().toString(36).slice(2)}@arumono-kondate`;
+  const uid = `${crypto.randomUUID()}@arumono-kondate`;
   return [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
