@@ -1,0 +1,30 @@
+{
+  "ignoreFiles": ["**/node_modules/**", "**/dist/**"],
+  "rules": {
+    "color-no-hex": [true, { "message": "色はトークン変数 (var(--color-*)) を使ってください" }],
+    "color-named": ["never", { "message": "色はトークン変数 (var(--color-*)) を使ってください" }],
+    "function-disallowed-list": [
+      ["rgb", "rgba", "hsl", "hsla"],
+      { "message": "色はトークン変数 (var(--color-*)) を使ってください" }
+    ],
+    "unit-disallowed-list": [
+      ["px"],
+      {
+        "ignoreProperties": { "px": ["/^border/", "/^outline/"] },
+        "message": "余白・サイズはトークン変数か rem を使ってください"
+      }
+    ],
+    "declaration-property-value-disallowed-list": [
+      { "/.*/": ["/var\\(--palette-/"] },
+      { "message": "プリミティブ (--palette-*) は直接使わず、セマンティック変数を使ってください" }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/theme.css"],
+      "rules": {
+        "color-no-hex": null
+      }
+    }
+  ]
+}

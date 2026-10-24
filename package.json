@@ -10,6 +10,10 @@
     "new-app": "node scripts/new-app.mjs",
     "dev:hub": "pnpm --filter hub dev",
     "build": "pnpm -r build",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "lint": "stylelint \"apps/**/*.css\" \"templates/**/*.css\" \"packages/design-tokens/src/**/*.css\" && node scripts/check-hardcoded.mjs"
+  },
+  "devDependencies": {
+    "stylelint": "^17.16.0"
   }
 }

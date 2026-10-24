@@ -1,22 +1,22 @@
-/* ハブ固有のレイアウト。色・余白・文字はすべてトークン変数を使う。 */
+/* ハブ固有のレイアウト。色・余白・文字はセマンティック/コンポーネントのトークン変数だけを使う。 */
 .page {
-  max-width: 1080px;
+  max-width: 67.5rem;
   margin: 0 auto;
-  padding: 0 var(--space-md);
+  padding: 0 var(--space-4);
 }
 
 .site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-md);
-  padding: var(--space-lg) 0;
+  gap: var(--space-4);
+  padding: var(--space-6) 0;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-2);
   color: var(--color-text);
   font-weight: var(--font-weight-bold);
   text-decoration: none;
@@ -25,7 +25,7 @@
 .site-nav {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-4);
   font-size: var(--font-size-sm);
 }
 
@@ -39,29 +39,29 @@
 }
 
 .theme-toggle {
-  padding: var(--space-xs) var(--space-sm);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--chip-border);
+  border-radius: var(--chip-radius);
+  background: var(--chip-bg);
+  color: var(--chip-text);
   font-size: var(--font-size-xs);
   cursor: pointer;
 }
 
 .hero {
-  padding: var(--space-xxl) 0 var(--space-xl);
+  padding: var(--space-10) 0 var(--space-8);
 }
 
 .hero-title {
   max-width: 18em;
-  font-size: clamp(var(--font-size-xl), 5vw, var(--font-size-xxl));
+  font-size: clamp(var(--font-size-xl), 5vw, var(--font-size-2xl));
   letter-spacing: -0.01em;
   word-break: auto-phrase;
   text-wrap: balance;
 }
 
 .hero-meta {
-  margin-top: var(--space-md);
+  margin-top: var(--space-4);
   color: var(--color-text-muted);
 }
 
@@ -73,19 +73,22 @@
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-lg);
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
 }
 
 .chip {
-  padding: var(--space-xs) var(--space-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  min-height: 2.75rem;
+  padding: var(--space-1) var(--space-4);
+  border: 1px solid var(--chip-border);
+  border-radius: var(--chip-radius);
+  background: var(--chip-bg);
+  color: var(--chip-text);
   font-size: var(--font-size-sm);
   cursor: pointer;
-  transition: background var(--duration-fast), color var(--duration-fast);
+  transition:
+    background var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard);
 }
 
 .chip:hover {
@@ -93,35 +96,38 @@
 }
 
 .chip[aria-selected='true'] {
-  border-color: var(--color-text);
-  background: var(--color-text);
-  color: var(--color-bg);
+  border-color: var(--chip-bg-selected);
+  background: var(--chip-bg-selected);
+  color: var(--chip-text-selected);
 }
 
 .app-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18.75rem), 1fr));
+  gap: var(--space-6);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .app-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--duration-normal), box-shadow var(--duration-normal);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  transition:
+    transform var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard);
 }
 
 .app-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(calc(var(--space-1) / -2));
+  box-shadow: var(--shadow-sheet);
 }
 
 .app-card-thumb {
@@ -139,22 +145,22 @@
 
 .app-card-initial {
   color: var(--color-primary);
-  font-size: var(--font-size-xxl);
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
 }
 
 .app-card-body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
-  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  gap: var(--space-2);
+  padding: var(--space-4) var(--card-padding) var(--card-padding);
 }
 
 .app-card-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-xs);
+  gap: var(--space-1);
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
 }
@@ -164,7 +170,7 @@
 }
 
 .badge {
-  padding: var(--space-xxs) var(--space-sm);
+  padding: calc(var(--space-1) / 2) var(--space-2);
   border-radius: var(--radius-full);
   background: var(--color-surface-muted);
   color: var(--color-text-muted);
@@ -173,7 +179,7 @@
 
 .badge-wip {
   background: var(--color-accent);
-  color: var(--color-on-primary);
+  color: var(--color-on-accent);
 }
 
 .app-card-title {
@@ -186,10 +192,6 @@
 }
 
 /* カード全体をクリック可能にする */
-.app-card {
-  position: relative;
-}
-
 .app-card-title a::after {
   content: '';
   position: absolute;
@@ -204,12 +206,12 @@
 .app-card-links {
   position: relative;
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-4);
   font-size: var(--font-size-sm);
 }
 
 .empty {
-  padding: var(--space-xxxl) var(--space-lg);
+  padding: calc(var(--space-10) * 2) var(--space-6);
   border: 1px dashed var(--color-border);
   border-radius: var(--radius-lg);
   text-align: center;
@@ -221,12 +223,12 @@
 }
 
 .empty-body {
-  margin-top: var(--space-sm);
+  margin-top: var(--space-2);
   color: var(--color-text-muted);
 }
 
 .site-footer {
-  padding: var(--space-xxl) 0 var(--space-lg);
+  padding: var(--space-10) 0 var(--space-6);
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   text-align: center;

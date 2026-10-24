@@ -1,8 +1,9 @@
 import { useColorScheme } from 'react-native';
-import { createTheme, type ColorTokens } from '@app-factory/design-tokens';
+import { createTheme } from '@app-factory/design-tokens';
 
-// このアプリだけの色の上書き。共通トークンはそのまま使い、必要な色だけ変える。
-const overrides: Record<'light' | 'dark', Partial<ColorTokens>> = {
+// このアプリだけのテーマ。上書きしてよいのはセマンティック色だけ (名前は CSS の --color-* と同じ)。
+// アプリ固有の役割 (例: 'macro-protein') もここで追加でき、theme.color.macroProtein で参照できる。
+const overrides: Record<'light' | 'dark', Record<string, string>> = {
   light: {},
   dark: {},
 };

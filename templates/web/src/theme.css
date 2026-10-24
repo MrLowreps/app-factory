@@ -1,9 +1,20 @@
 /*
- * このアプリだけのテーマ調整。共通トークンの変数を上書きする。
- * 例: アクセントカラーを変える
+ * このアプリだけのテーマ。上書きしてよいのはセマンティック層 (--color-* など) だけ。
+ * ライトとダークは別々に指定する (ダークは下の2つのセレクタの両方に書く)。
+ * アプリ固有の役割 (例: --color-macro-protein) もここで定義する。
  *
  * :root {
- *   --color-primary: #00A86B;
- *   --color-primary-hover: #008F5B;
+ *   --color-primary: #0B7A53;
+ *   --color-primary-soft: #E2F5EC;
+ * }
+ *
+ * @media (prefers-color-scheme: dark) {
+ *   :root:not([data-theme="light"]) {
+ *     --color-primary: #3FC08D;
+ *   }
+ * }
+ *
+ * :root[data-theme="dark"] {
+ *   --color-primary: #3FC08D;
  * }
  */
