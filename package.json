@@ -1,0 +1,15 @@
+{
+  "name": "app-factory",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "new-app": "node scripts/new-app.mjs",
+    "dev:hub": "pnpm --filter hub dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck"
+  }
+}

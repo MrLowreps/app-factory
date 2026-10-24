@@ -1,0 +1,43 @@
+/* レイアウト用。色・余白・文字サイズは var(--...) のトークンを使う。 */
+.app {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: var(--space-lg) var(--space-md);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-xl);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.card h1 {
+  font-size: var(--font-size-xl);
+}
+
+.card p {
+  margin-top: var(--space-sm);
+  color: var(--color-text-muted);
+}
+
+.button {
+  margin-top: var(--space-lg);
+  padding: var(--space-sm) var(--space-lg);
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background var(--duration-fast);
+}
+
+.button:hover {
+  background: var(--color-primary-hover);
+}
