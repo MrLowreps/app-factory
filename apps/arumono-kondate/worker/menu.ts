@@ -1,7 +1,9 @@
 // POST /api/menu の処理。入力と AI の返答はどちらもスキーマで検査する。
 // 送信内容 (食材や目標) はログに残さない。
-import { MenuPlanSchema, MenuRequestSchema, type MenuRequest } from '../src/domain/menu';
-import { pickProvider, type MenuGenerator, type ProviderEnv } from './providers';
+import { z } from 'zod';
+import { MenuPlanSchema, MenuRequestSchema, type MenuPlan, type MenuRequest } from '../src/domain/menu';
+import { normalizePlan } from './normalize';
+import { GenerationError, pickProvider, type FailureReason, type MenuGenerator, type ProviderEnv } from './providers';
 import { consume, type RateLimitStore } from './rateLimit';
 
 export interface MenuEnv extends ProviderEnv {
@@ -11,6 +13,8 @@ export interface MenuEnv extends ProviderEnv {
 }
 
 const MAX_BODY_BYTES = 8 * 1024;
+/** 返答の形が崩れたときに1回だけやり直す */
+const MAX_ATTEMPTS = 2;
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
@@ -33,11 +37,37 @@ export async function handleMenu(request: Request, env: MenuEnv, generate?: Menu
   const limit = Number(env.MENU_DAILY_LIMIT ?? 10);
   if (!(await consume(env.RATE_LIMIT, ip, limit))) return json({ error: 'rate_limited' }, 429);
 
-  try {
-    const plan = await (generate ?? pickProvider(env))(parsed, env);
-    return json(MenuPlanSchema.parse(plan));
-  } catch (err) {
-    console.error('menu generation failed', err instanceof Error ? err.name : 'unknown');
-    return json({ error: 'generation_failed' }, 502);
+  let reason: FailureReason = 'ai_error';
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      return json(await generatePlan(parsed, env, generate));
+    } catch (err) {
+      reason = err instanceof GenerationError ? err.reason : 'ai_error';
+      // 中身は残さず、原因の種類と場所だけをログに出す
+      console.error('menu generation failed', { attempt, reason, detail: describe(err) });
+      if (reason === 'not_configured') break;
+    }
   }
+  return json({ error: 'generation_failed', reason }, 502);
+}
+
+async function generatePlan(req: MenuRequest, env: MenuEnv, generate?: MenuGenerator): Promise<MenuPlan> {
+  let raw: unknown;
+  try {
+    raw = await (generate ?? pickProvider(env))(req, env);
+  } catch (err) {
+    throw err instanceof GenerationError ? err : new GenerationError('ai_error', describe(err));
+  }
+  try {
+    return MenuPlanSchema.parse(normalizePlan(raw));
+  } catch (err) {
+    throw new GenerationError('invalid_output', describe(err));
+  }
+}
+
+function describe(err: unknown): string {
+  if (err instanceof GenerationError) return err.message;
+  if (err instanceof z.ZodError) return err.issues.map((i) => `${i.path.join('.')}:${i.code}`).slice(0, 5).join(', ');
+  if (err instanceof Error) return `${err.name}: ${err.message}`.slice(0, 200);
+  return 'unknown';
 }

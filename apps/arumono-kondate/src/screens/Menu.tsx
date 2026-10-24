@@ -4,7 +4,7 @@ import { APP } from '../config';
 import { getFood } from '../domain/foods';
 import { dishNutrition, formatAmount, MEAL_LABEL, planNutrition, type Dish } from '../domain/menu';
 import { buildShoppingList, isOwned } from '../domain/shopping';
-import { MENU_ERROR_TEXT, MenuRequestError, requestMenu } from '../lib/menuApi';
+import { menuErrorText, requestMenu } from '../lib/menuApi';
 import { today, useAppState } from '../state';
 import { CookedSheet } from './CookedSheet';
 import { Icon } from '../ui/Icon';
@@ -33,7 +33,7 @@ export function Menu({ onGoFridge, onGoShopping }: { onGoFridge: () => void; onG
       app.setChecked([]);
       app.countUsage();
     } catch (err) {
-      setError(MENU_ERROR_TEXT[err instanceof MenuRequestError ? err.kind : 'failed']);
+      setError(menuErrorText(err));
     } finally {
       setLoading(false);
     }

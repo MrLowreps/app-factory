@@ -3,12 +3,12 @@ import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { MenuPlanSchema } from '../../src/domain/menu';
 import { buildUserPrompt, SYSTEM_PROMPT } from '../prompt';
-import type { MenuGenerator } from './types';
+import { GenerationError, type MenuGenerator } from './types';
 
 const DEFAULT_MODEL = 'claude-haiku-5-5';
 
 export const generateWithClaude: MenuGenerator = async (req, env) => {
-  if (!env.ANTHROPIC_API_KEY) throw new Error('missing api key');
+  if (!env.ANTHROPIC_API_KEY) throw new GenerationError('not_configured', 'missing api key');
   const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 1, timeout: 60_000 });
   const response = await client.messages.parse({
     model: env.AI_MODEL || DEFAULT_MODEL,
