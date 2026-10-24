@@ -1,6 +1,6 @@
 // apps/*/factory.json を集めて、ハブの一覧データ (src/generated/apps.json) を生成する。
 // サムネイル画像は public/thumbs/ にコピーする。
-import { existsSync, readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync, rmSync } from 'node:fs';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -15,18 +15,22 @@ mkdirSync(thumbsDir, { recursive: true });
 
 const apps = [];
 for (const slug of readdirSync(appsDir).sort()) {
-  const manifestPath = join(appsDir, slug, 'factory.json');
-  if (slug === 'hub' || !existsSync(manifestPath)) continue;
+  if (slug === 'hub') continue;
+  let manifest;
+  try {
+    manifest = JSON.parse(readFileSync(join(appsDir, slug, 'factory.json'), 'utf8'));
+  } catch (err) {
+    if (err.code === 'ENOENT' || err.code === 'ENOTDIR') continue; // factory.json のないフォルダは対象外
+    throw err;
+  }
 
-  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
   let thumbnail = null;
   if (manifest.thumbnail) {
-    const src = join(appsDir, slug, manifest.thumbnail);
-    if (existsSync(src)) {
-      const file = `${slug}${extname(src)}`;
-      copyFileSync(src, join(thumbsDir, file));
+    const file = `${slug}${extname(manifest.thumbnail)}`;
+    try {
+      copyFileSync(join(appsDir, slug, manifest.thumbnail), join(thumbsDir, file));
       thumbnail = `/thumbs/${file}`;
-    } else {
+    } catch {
       console.warn(`[collect] ${slug}: サムネイル ${manifest.thumbnail} が見つかりません`);
     }
   }

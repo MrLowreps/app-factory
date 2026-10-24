@@ -1,6 +1,6 @@
 // 新しいアプリをテンプレートから作る。
 // 使い方: pnpm new-app <slug> [--type web|expo] [--name 表示名]
-import { cpSync, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -26,21 +26,22 @@ if (!['web', 'expo'].includes(values.type)) {
 }
 
 const dest = join(root, 'apps', slug);
-if (existsSync(dest)) {
-  console.error(`apps/${slug} はすでに存在します`);
+try {
+  // 既存のフォルダは上書きしない
+  cpSync(join(root, 'templates', values.type), dest, { recursive: true, force: false, errorOnExist: true });
+} catch (err) {
+  console.error(err.code === 'ERR_FS_CP_EEXIST' ? `apps/${slug} はすでに存在します` : err.message);
   process.exit(1);
 }
-
-cpSync(join(root, 'templates', values.type), dest, { recursive: true });
 
 const TEXT_EXT = new Set(['.json', '.ts', '.tsx', '.html', '.css', '.md']);
 const replacements = { __APP_SLUG__: slug, __APP_NAME__: values.name ?? slug };
 
 const walk = (dir) => {
-  for (const entry of readdirSync(dir)) {
-    const path = join(dir, entry);
-    if (statSync(path).isDirectory()) walk(path);
-    else if (TEXT_EXT.has(extname(path))) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) walk(path);
+    else if (entry.isFile() && TEXT_EXT.has(extname(path))) {
       let text = readFileSync(path, 'utf8');
       for (const [from, to] of Object.entries(replacements)) text = text.replaceAll(from, to);
       writeFileSync(path, text);
