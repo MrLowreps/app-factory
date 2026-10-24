@@ -2,6 +2,7 @@
 // 送信内容 (食材や目標) はログに残さない。
 import { z } from 'zod';
 import { MenuPlanSchema, MenuRequestSchema, type MenuPlan, type MenuRequest } from '../src/domain/menu';
+import { fitToTargets } from '../src/domain/balance';
 import { normalizePlan } from './normalize';
 import { GenerationError, pickProvider, type FailureReason, type MenuGenerator, type ProviderEnv } from './providers';
 import { consume, type RateLimitStore } from './rateLimit';
@@ -59,7 +60,7 @@ async function generatePlan(req: MenuRequest, env: MenuEnv, generate?: MenuGener
     throw err instanceof GenerationError ? err : new GenerationError('ai_error', describe(err));
   }
   try {
-    return MenuPlanSchema.parse(normalizePlan(raw));
+    return fitToTargets(MenuPlanSchema.parse(normalizePlan(raw)), req.targets);
   } catch (err) {
     throw new GenerationError('invalid_output', describe(err));
   }
