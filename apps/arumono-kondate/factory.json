@@ -1,0 +1,19 @@
+{
+  "name": "あるもの献立",
+  "description": "冷蔵庫の残り物と、自分のカロリー・PFC目標から1日の献立と買い物リストを作るアプリ",
+  "platforms": [
+    "web"
+  ],
+  "status": "wip",
+  "publishedAt": "",
+  "links": {
+    "web": "https://arumono-kondate.pages.dev"
+  },
+  "thumbnail": "",
+  "tags": [
+    "料理",
+    "ダイエット",
+    "筋トレ",
+    "AI"
+  ]
+}
