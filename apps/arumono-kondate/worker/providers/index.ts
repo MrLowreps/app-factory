@@ -1,6 +1,6 @@
 // AI_PROVIDER の値で事業者を選ぶ。新しい事業者はファイルを1つ足して、ここに登録する。
 import { generateWithClaude } from './claude';
-import type { MenuGenerator, ProviderEnv } from './types';
+import { GenerationError, type MenuGenerator, type ProviderEnv } from './types';
 import { generateWithWorkersAi } from './workersAi';
 
 export const PROVIDERS: Record<string, MenuGenerator> = {
@@ -10,8 +10,8 @@ export const PROVIDERS: Record<string, MenuGenerator> = {
 
 export function pickProvider(env: ProviderEnv): MenuGenerator {
   const provider = PROVIDERS[env.AI_PROVIDER || 'workers-ai'];
-  if (!provider) throw new Error('unknown AI_PROVIDER');
+  if (!provider) throw new GenerationError('not_configured', 'unknown AI_PROVIDER');
   return provider;
 }
 
-export type { MenuGenerator, ProviderEnv } from './types';
+export { GenerationError, type FailureReason, type MenuGenerator, type ProviderEnv } from './types';

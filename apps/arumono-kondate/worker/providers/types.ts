@@ -13,3 +13,12 @@ export interface ProviderEnv {
 }
 
 export type MenuGenerator = (req: MenuRequest, env: ProviderEnv) => Promise<unknown>;
+
+/** 失敗の種類。中身 (食材や目標) は含めず、原因の切り分けにだけ使う */
+export type FailureReason = 'not_configured' | 'ai_error' | 'invalid_output';
+
+export class GenerationError extends Error {
+  constructor(readonly reason: FailureReason, detail?: string) {
+    super(detail ?? reason);
+  }
+}
