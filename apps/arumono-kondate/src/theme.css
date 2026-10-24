@@ -1,0 +1,56 @@
+/*
+ * あるもの献立のテーマ (配色: 案A フレッシュミント)。上書きしてよいのはセマンティック層 (--color-*) だけ。
+ * - ライトとダークは必ず両方書く。`pnpm lint` で検査される
+ * - primary を変えれば hover / pressed / soft は自動で追従する
+ * - --color-macro-* は PFC の3色 (緑・オレンジと被らない色相)。グラフ・共有カードで使う
+ */
+
+:root {
+  --color-primary: #0B7A53;
+  --color-on-primary: #FFFFFF;
+  --color-accent: #FB8A3C;
+  --color-on-accent: #2B1405;
+  --color-background: #F5FAF7;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #EEF1EF;
+  --color-text: #1C2420;
+  --color-text-muted: #5B6660;
+  --color-border: #E3E8E5;
+  --color-macro-protein: #3B6FE0;
+  --color-macro-fat: #D9962B;
+  --color-macro-carb: #8B6FD6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-primary: #4CC79A;
+    --color-on-primary: #04291B;
+    --color-accent: #FFA463;
+    --color-on-accent: #2B1405;
+    --color-background: #0F1513;
+    --color-surface: #18201D;
+    --color-surface-muted: #222B27;
+    --color-text: #E8EFEB;
+    --color-text-muted: #9AA8A1;
+    --color-border: #2C3632;
+    --color-macro-protein: #7FA3F5;
+    --color-macro-fat: #F0B65A;
+    --color-macro-carb: #B39DF0;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-primary: #4CC79A;
+  --color-on-primary: #04291B;
+  --color-accent: #FFA463;
+  --color-on-accent: #2B1405;
+  --color-background: #0F1513;
+  --color-surface: #18201D;
+  --color-surface-muted: #222B27;
+  --color-text: #E8EFEB;
+  --color-text-muted: #9AA8A1;
+  --color-border: #2C3632;
+  --color-macro-protein: #7FA3F5;
+  --color-macro-fat: #F0B65A;
+  --color-macro-carb: #B39DF0;
+}
