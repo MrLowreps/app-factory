@@ -6,8 +6,8 @@ export const APP = {
   dailyMenuLimit: 3,
   hashtag: '#あるもの献立',
   /** プライバシーポリシー・利用規約に載せる運営者名と問い合わせ先 */
-  // TODO(公開前): 運営者名と問い合わせ先 (専用メールか Google フォーム) を決めて差し替える
-  operator: 'あるもの献立 運営者',
+  // TODO(公開前): 問い合わせ先 (専用メールか Google フォーム) を決めて差し替える
+  operator: 'Mr 低レップ',
   contact: { label: 'お問い合わせ先（準備中）', url: '' },
   /** プライバシーポリシー・利用規約の制定日・改定日 */
   legalUpdated: '2026年10月25日',
