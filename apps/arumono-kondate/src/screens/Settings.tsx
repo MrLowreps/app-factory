@@ -1,4 +1,4 @@
-// 設定: 目標の見直し、苦手な食材、テーマ、データの削除。
+// 設定: 目標の見直し、苦手な食材、テーマ、データの削除、規約。
 import { useState } from 'react';
 import { APP } from '../config';
 import { FOODS } from '../domain/foods';
@@ -9,6 +9,8 @@ import { FoodChips } from '../ui/FoodChips';
 import { Icon } from '../ui/Icon';
 import { Sheet } from '../ui/Sheet';
 import { useToast } from '../ui/Toast';
+import type { LegalDoc } from '../content/legal';
+import { LegalLinks, LegalSheet } from './Legal';
 import { TargetEditor } from './Onboarding';
 
 type Theme = 'system' | 'light' | 'dark';
@@ -41,6 +43,7 @@ export function Settings({ onClose, onRedoGoal }: { onClose: () => void; onRedoG
   const [theme, setTheme] = useState<Theme>(readTheme);
   const [editing, setEditing] = useState(false);
   const [dislikeOpen, setDislikeOpen] = useState(false);
+  const [legal, setLegal] = useState<LegalDoc | null>(null);
 
   const reset = async () => {
     if (!window.confirm('目標・食材・献立・記録をすべて削除します。元に戻せません。よろしいですか？')) return;
@@ -48,6 +51,9 @@ export function Settings({ onClose, onRedoGoal }: { onClose: () => void; onRedoG
     await idbClear().catch(() => undefined);
     window.location.reload();
   };
+
+  // 規約は設定の上に重ねず、設定と入れ替えて表示する (閉じると設定に戻る)
+  if (legal) return <LegalSheet doc={legal} onClose={() => setLegal(null)} />;
 
   return (
     <Sheet title="設定" onClose={onClose}>
@@ -137,6 +143,7 @@ export function Settings({ onClose, onRedoGoal }: { onClose: () => void; onRedoG
       <p className="muted small">
         {APP.name}の栄養の数値は目安です。医療・栄養指導の代わりにはなりません。
       </p>
+      <LegalLinks onOpen={setLegal} />
     </Sheet>
   );
 }
