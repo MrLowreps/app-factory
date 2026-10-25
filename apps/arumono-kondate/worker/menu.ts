@@ -69,6 +69,8 @@ async function generatePlan(req: MenuRequest, env: MenuEnv, generate?: MenuGener
 function describe(err: unknown): string {
   if (err instanceof GenerationError) return err.message;
   if (err instanceof z.ZodError) return err.issues.map((i) => `${i.path.join('.')}:${i.code}`).slice(0, 5).join(', ');
+  // JSON の読み取りエラーは AI の返答の一部を含むので、種類だけを残す
+  if (err instanceof SyntaxError) return err.name;
   if (err instanceof Error) return `${err.name}: ${err.message}`.slice(0, 200);
   return 'unknown';
 }

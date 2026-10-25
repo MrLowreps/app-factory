@@ -19,9 +19,11 @@ import {
   withKcal,
   withMacro,
 } from '../domain/targets';
+import type { LegalDoc } from '../content/legal';
 import { useAppState } from '../state';
 import { Icon, type IconName } from '../ui/Icon';
 import { MACRO_META } from '../ui/MacroBars';
+import { LegalLinks, LegalSheet } from './Legal';
 
 type Step = 'welcome' | 'goal' | 'body' | 'activity' | 'pace' | 'result';
 
@@ -39,6 +41,7 @@ export function Onboarding({ startAt = 'welcome', onDone }: { startAt?: Step; on
   const app = useAppState();
   const [step, setStep] = useState<Step>(startAt);
   const [profile, setProfile] = useState<Profile>(app.profile ?? INITIAL);
+  const [legal, setLegal] = useState<LegalDoc | null>(null);
   const update = (patch: Partial<Profile>) => setProfile((p) => ({ ...p, ...patch }));
 
   const steps: Step[] = ['goal', 'body', 'activity', ...(profile.goal === 'maintain' ? [] : (['pace'] as Step[])), 'result'];
@@ -77,7 +80,10 @@ export function Onboarding({ startAt = 'welcome', onDone }: { startAt?: Step; on
           <button type="button" className="button button-ghost button-block" onClick={skip}>
             あとで設定する
           </button>
+          <p className="muted small center">はじめると、利用規約とプライバシーポリシーに同意したことになります。</p>
+          <LegalLinks onOpen={setLegal} />
         </div>
+        {legal && <LegalSheet doc={legal} onClose={() => setLegal(null)} />}
       </div>
     );
   }
