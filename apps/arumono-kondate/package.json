@@ -21,6 +21,6 @@
     "@vitejs/plugin-react": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
-    "@cloudflare/workers-types": "^5.20261024.1"
+    "@cloudflare/workers-types": "^5.20261028.1"
   }
 }
