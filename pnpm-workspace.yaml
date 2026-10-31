@@ -6,8 +6,8 @@ packages:
 # (Web と スマホで React が二重に入ると動かなくなるため)。
 # Expo SDK を上げるときは、ここもまとめて更新する。
 catalog:
-  react: 19.3.0
-  react-dom: 19.3.0
+  react: 19.3.1
+  react-dom: 19.3.1
   '@types/react': ~19.3.0
   '@types/react-dom': ~19.3.0
   typescript: ~6.0.3
